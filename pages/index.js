@@ -5,8 +5,20 @@ import { SearchIcon } from "@heroicons/react/outline";
 
 import Image from "next/image";
 import Footer from "../components/Footer";
+import { useRef } from "react";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+  const searchInputRef = useRef(null);
+
+  const search = (e) => {
+    e.preventDefault();
+    const term = searchInputRef.current.value;
+    if (!term) return;
+    router.push(`/search?term=${term}`);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Head>
@@ -35,12 +47,20 @@ export default function Home() {
         />
         <div className="border border-gray-200 flex w-full mt-5 hover:shadow-lg focus-within:shadow-lg max-w-md rounded-full px-5 py-3 items-center sm:max-w-xl lg:max-w-2xl">
           <SearchIcon className="h-5 mr-3 text-gray-500" />
-          <input type="text" className="focus:outline-none flex-grow" />
+          <input
+            type="text"
+            className="focus:outline-none flex-grow"
+            ref={searchInputRef}
+          />
           <MicrophoneIcon className="h-5 mr-3 text-gray-500" />
         </div>
         <div className="flex space-x-4   justify-center mt-8 sm:space-y-0 sm:flex-row sm:space-x-4">
-          <button className="btn">Google Search</button>
-          <button className="btn">I'm Feeling Lucky</button>
+          <button className="btn" onClick={search}>
+            Google Search
+          </button>
+          <button className="btn" onClick={search}>
+            I'm Feeling Lucky
+          </button>
         </div>
       </form>
 
